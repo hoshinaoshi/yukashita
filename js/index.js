@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import * as bootstrap from 'react-bootstrap';
 import Head from './containers/Head';
 import Top from './containers/Top';
 
