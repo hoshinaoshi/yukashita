@@ -18,6 +18,7 @@ export default class Head extends Component {
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css" />
+        <link rel="stylesheet" href="./dist/bundle.css" />
       </Helmet>
     )
   }
