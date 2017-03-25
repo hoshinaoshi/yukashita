@@ -17,7 +17,7 @@ export default class Register extends Component {
         <Row>
           <Col md={12}><p>事前登録受付中！申し込みは下記のボタンから</p></Col>
           <Col md={12}>
-            <Button bsStyle="success">事前登録する<Glyphicon glyph="envelope" /></Button>
+            <Button bsStyle="success" href="https://docs.google.com/forms/d/e/1FAIpQLSfERmTjXCQzTZqaY2ruWH4bhlBGWGujcShOATXPKvxDwdqZxw/viewform?c=0&w=1">事前登録する<Glyphicon glyph="envelope" /></Button>
           </Col>
         </Row>
       </Grid>
