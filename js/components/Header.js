@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { Button, Grid, Row, Col, Glyphicon, Image } from 'react-bootstrap';
+import { Button, Grid, Row, Col, Jumbotron, Glyphicon, Image } from 'react-bootstrap';
 
 export default class Header extends Component {
   render() {
     return (
+      <Jumbotron>
       <Grid>
 	<Row className="show-grid">
 	  <Col md={12}>
@@ -13,6 +14,7 @@ export default class Header extends Component {
           </Col>
 	</Row>
       </Grid>
+      </Jumbotron>
     );
   }
 }
