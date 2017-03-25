@@ -15,10 +15,8 @@ export default class Head extends Component {
         
         <meta name="keywords" content="従量制, ファイル,クラウド,効率,高速,大容量" />
         <meta name="description" content="ユカシタは実際に使用した分だけお支払いいただくクラウドストレージサービスです。ライセンスや複雑な契約がなく、シンプルな従量制です。容量も無制限>にご利用いただけます。" />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css" />
-        <link rel="stylesheet" href="./dist/bundle.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
       </Helmet>
     )
   }

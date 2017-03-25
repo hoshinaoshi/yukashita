@@ -1,19 +1,14 @@
 import React, { Component, PropTypes } from 'react';
-import  TodoItem from './TodoItem';
+import { Button, Grid, Row, Col, Glyphicon, Image } from 'react-bootstrap';
 
-class MainSection extends Component {
+export default class Footer extends Component {
   render() {
-    const { todos, actions } = this.props;
     return (
-      <section className="main">
-        <ul className="todo-list">
-          {todos.map(todo =>
-          <TodoItem key={todo.id} todo={todo} {...actions}/>
-        )}
-      </ul>
-      </section>
+      <Grid>
+        <Row>
+          <Col md={12}><p>&copy;<Button bsStyle="link" href="http://blog.naoshihoshi.com/" target="_blank">NaoshiHoshi.</Button> All Rights Reserved.</p></Col>
+        </Row>
+      </Grid>
     );
   }
 }
-
-export default MainSection;
