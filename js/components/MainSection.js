@@ -5,12 +5,12 @@ export default class MainSection extends Component {
   render() {
     return (
       <Grid id="top-main-section">
-        <Row className="show-grid top-icon">
+        <Row className="top-icon center">
           <Col md={4}><Glyphicon glyph="apple" /></Col>
           <Col md={4}><Glyphicon glyph="resize-full" /></Col>
           <Col md={4}><Glyphicon glyph="euro" /></Col>
         </Row>
-        <Row className="show-grid">
+        <Row className="center">
           <Col md={4}><h2>シンプル</h2></Col>
           <Col md={4}><h2>無制限</h2></Col>
           <Col md={4}><h2>低コスト</h2></Col>
