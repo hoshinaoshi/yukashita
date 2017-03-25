@@ -6,8 +6,6 @@ module.exports = {
   devtool: debug ? "inline-sourcemap" : null,
   entry: {
     app: [
-      "webpack-dev-server/client?http://localhost:8080",
-      "webpack/hot/dev-server",
       "./js/index.js"
     ]
   },
@@ -23,7 +21,7 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         query: {
-          presets: ['react', 'es2015', 'stage-0', 'react-hmre'],
+          presets: ['react', 'es2015', 'stage-0'],
           plugins: ['react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy'],
         }
       }
