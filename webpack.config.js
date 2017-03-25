@@ -13,7 +13,6 @@ module.exports = [
     },
     output: {
       path: path.join(__dirname, 'dist'),
-      publicPath: '/static/',
       filename: 'bundle.js',
     },
     module: {
@@ -40,7 +39,6 @@ module.exports = [
     entry: './stylesheets/index.scss',
     output: {
       path: path.join(__dirname, 'dist'),
-      publicPath: '/static/',
       filename: 'bundle.css',
     },
     module: {
@@ -53,6 +51,10 @@ module.exports = [
               use: ["css-loader", "sass-loader?outputStyle=expanded"]
             }
           )
+        },
+        {
+          test: /\.(jpg|png)$/,
+          use: 'file-loader?name=images/[name].[ext]'
         }
       ]
     },
