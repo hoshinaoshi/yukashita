@@ -6,7 +6,9 @@
   "author": "NaoshiHoshi <hoshinaoshi@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "amazon-cognito-identity-js": "^1.16.0",
     "es6-promise": "^4.1.0",
+    "jsbn": "^1.1.0",
     "lodash": "^4.17.4",
     "react": "^15.1.0",
     "react-bootstrap": "^0.30.8",
@@ -45,6 +47,7 @@
     "express": "^4.15.2",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
+    "json-loader": "^0.5.4",
     "node-sass": "^4.5.1",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.16.0"
