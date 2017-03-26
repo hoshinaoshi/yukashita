@@ -8,7 +8,7 @@ export default class MainSection extends Component {
         <Row className="top-icon center">
           <Col md={4}><Glyphicon glyph="apple" /></Col>
           <Col md={4}><Glyphicon glyph="resize-full" /></Col>
-          <Col md={4}><Glyphicon glyph="euro" /></Col>
+          <Col md={4}><Glyphicon glyph="usd" /></Col>
         </Row>
         <Row className="center">
           <Col md={4}><h2>シンプル</h2></Col>
