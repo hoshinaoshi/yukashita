@@ -1,7 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import { Button, Grid, Row, Col, Jumbotron, Glyphicon, Image } from 'react-bootstrap';
+import { Button, Grid, Row, Col, Jumbotron, Glyphicon, Image, Collapse, Modal } from 'react-bootstrap';
+import SignUpButton from './SignUpButton';
 
 export default class Header extends Component {
+  constructor(...args) {
+    super(...args);
+    this.state = {};
+  }
   render() {
     return (
       <Jumbotron>
@@ -10,7 +15,7 @@ export default class Header extends Component {
 	  <Col md={12}>
             <h1>ユカシタ</h1>
             <p>実際に使用した分だけお支払いいただくクラウドストレージサービスです。</p>
-            <Button bsStyle="success" href="https://docs.google.com/forms/d/e/1FAIpQLSfERmTjXCQzTZqaY2ruWH4bhlBGWGujcShOATXPKvxDwdqZxw/viewform?c=0&w=1">事前登録する<Glyphicon glyph="envelope" /></Button>
+            <SignUpButton />
           </Col>
 	</Row>
       </Grid>

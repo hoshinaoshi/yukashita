@@ -1,7 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import { Button, Grid, Row, Col, Glyphicon, Image } from 'react-bootstrap';
+import { Button, Grid, Row, Col, Jumbotron, Glyphicon, Image, Collapse, Modal } from 'react-bootstrap';
+import SignUpButton from './SignUpButton';
 
 export default class Register extends Component {
+  constructor(...args) {
+    super(...args);
+    this.state = {};
+  }
   render() {
     return (
       <Grid>
@@ -15,9 +20,8 @@ export default class Register extends Component {
           </Col>
         </Row>
         <Row className="top-register-row center">
-          <Col md={12}><p className="center">事前登録受付中！申し込みは下記のボタンから</p></Col>
           <Col md={12}>
-            <Button bsStyle="success" href="https://docs.google.com/forms/d/e/1FAIpQLSfERmTjXCQzTZqaY2ruWH4bhlBGWGujcShOATXPKvxDwdqZxw/viewform?c=0&w=1">事前登録する<Glyphicon glyph="envelope" /></Button>
+            <SignUpButton />
           </Col>
         </Row>
       </Grid>
