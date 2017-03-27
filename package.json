@@ -15,7 +15,7 @@
     "react-dom": "^15.1.0",
     "react-helmet": "^5.0.1",
     "react-redux": "^5.0.3",
-    "react-router": "^3.0.0",
+    "react-router-dom": "^4.0.0",
     "redux": "^3.6.0",
     "redux-devtools": "^2.1.5",
     "redux-thunk": "^1.0.0",
@@ -54,7 +54,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --content-base src --inline",
+    "dev": "webpack-dev-server --content-base ./ --inline",
     "build": "webpack --progress --watch"
   }
 }
