@@ -17,7 +17,7 @@ const userPool = new CognitoUserPool({
   ClientId:   awsConfig.ClientId,
 });
 
-export default class Mypage extends React.Component {
+export default class Dashboard extends React.Component {
   constructor() {
     super();
     this.state = {

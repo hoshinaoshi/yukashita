@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import { HashRouter, Route, Link} from 'react-router-dom'
 import { Button, Grid, Row, Col, Jumbotron, Glyphicon, Image, Collapse, Modal } from 'react-bootstrap';
-import SignUpButton from './SignUpButton';
 
 export default class Register extends Component {
   constructor(...args) {
@@ -21,7 +21,9 @@ export default class Register extends Component {
         </Row>
         <Row className="top-register-row center">
           <Col md={12}>
-            <SignUpButton />
+            <Link to="/signup">
+              <Button>今すぐ始める</Button>
+            </Link>
           </Col>
         </Row>
       </Grid>

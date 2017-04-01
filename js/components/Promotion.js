@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Button, Grid, Row, Col, Glyphicon, Image } from 'react-bootstrap';
 
-export default class MainSection extends Component {
+export default class Promotion extends Component {
   render() {
     return (
       <Grid id="top-main-section">
