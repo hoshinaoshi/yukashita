@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { HashRouter, Route, Link, Redirect, withRouter} from 'react-router-dom'
 
 // AWS
 import awsConfig from "../utils/aws-config.js";
@@ -23,7 +24,8 @@ export default class SignIn extends React.Component {
     this.state = {
       email: '',
       password: '',
-      code: ''
+      code: '',
+      isLogin: false
     };
   }
 
@@ -35,12 +37,10 @@ export default class SignIn extends React.Component {
     this.setState({password: e.target.value});
   }
   
-  handleCodeChange(e) {
-    this.setState({code: e.target.value});
-  }
-
   handleSubmit(e) {
     e.preventDefault();
+    const { from } = this.props.location.state || { from: { pathname: '/' } }
+    const { redirectToReferrer } = this.state
     const authenticationData = {
       Username : this.state.email.trim(),
       Password : this.state.password.trim()
@@ -51,6 +51,8 @@ export default class SignIn extends React.Component {
       Pool : userPool
     };
     var cognitoUser = new CognitoUser(userData);
+    var isLogin = false;
+    const that = this;
     cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: function (result) {
             console.log('access token + ' + result.getAccessToken().getJwtToken());
@@ -65,6 +67,8 @@ export default class SignIn extends React.Component {
 
             // Instantiate aws sdk service objects now that the credentials have been updated.
             // example: var s3 = new AWS.S3();
+            that.setState({isLogin: true})
+            that.render
 
         },
 
@@ -76,27 +80,35 @@ export default class SignIn extends React.Component {
   }
 
   render() {
-    return (
-      <Grid>
-        <Row>
-          <Col md={12}>
-            <p>Use case 4. Authenticating a user and establishing a user session with the Amazon Cognito Identity service.</p>
-          </Col>
-          <Col md={12}>
-	    <form onSubmit={this.handleSubmit.bind(this)}>
-	      <input type="text"
-		     value={this.state.email}
-		     placeholder="Email"
-		     onChange={this.handleEmailChange.bind(this)}/>
-	      <input type="password"
-		     value={this.state.password}
-		     placeholder="Password"
-		     onChange={this.handlePasswordChange.bind(this)}/>
-	      <input type="submit"/>
-	    </form>
-          </Col>
-        </Row>
-      </Grid>
-    );
+    if(this.state.isLogin){
+      return(
+        <Redirect to={{
+          pathname: '/mypage'
+        }}/>
+      )
+    } else {
+      return (
+        <Grid>
+          <Row>
+            <Col md={12}>
+              <p>Use case 4. Authenticating a user and establishing a user session with the Amazon Cognito Identity service.</p>
+            </Col>
+            <Col md={12}>
+              <form onSubmit={this.handleSubmit.bind(this)}>
+                <input type="text"
+                       value={this.state.email}
+                       placeholder="Email"
+                       onChange={this.handleEmailChange.bind(this)}/>
+                <input type="password"
+                       value={this.state.password}
+                       placeholder="Password"
+                       onChange={this.handlePasswordChange.bind(this)}/>
+                <input type="submit"/>
+              </form>
+            </Col>
+          </Row>
+        </Grid>
+      );
+    }
   }
 }

@@ -8,7 +8,7 @@ import Footer from './containers/Footer';
 import Top from './containers/Top';
 import SignUp from './containers/SignUp';
 import SignIn from './containers/SignIn';
-import Dashboard from './containers/Dashboard';
+import Mypage from './containers/Mypage';
 
 ReactDOM.render(
   <HashRouter basename="/">
@@ -18,7 +18,7 @@ ReactDOM.render(
       <Route exact path="/" component={Top}/>
       <Route path="/signup" component={SignUp}/>
       <Route path="/signin" component={SignIn}/>
-      <Route path="/dashboard" component={Dashboard}/>
+      <Route path="/mypage" component={Mypage}/>
       <Footer />
     </div>
   </HashRouter>,

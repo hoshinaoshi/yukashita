@@ -8,9 +8,9 @@ export default class Header extends Component {
       <Jumbotron id="header">
         <Grid>
           <Row className="show-grid">
-            <Col md={1}>Yukashita</Col>
-            <Col mdOffset={9} md={1}><Link to="/signin">SignIn</Link></Col>
-            <Col md={1}><Link to="/signup">SignUp</Link></Col>
+            <Col md={1}>SmartShot</Col>
+            <Col mdOffset={9} md={1}><Link to="/mypage">マイページ</Link></Col>
+            <Col md={1}><Link to="/signup">会員登録</Link></Col>
           </Row>
         </Grid>
       </Jumbotron>
