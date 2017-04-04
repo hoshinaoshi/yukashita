@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { HashRouter, Route, Link, Redirect, withRouter} from 'react-router-dom'
+import Upload from '../components/mypage/Upload';
 
 // AWS
 import awsConfig from "../utils/aws-config.js";
@@ -36,6 +37,7 @@ export default class Mypage extends React.Component {
       cognitoUser.getSession(function(err, sessresult) {
         if (sessresult) {
           console.log("login success")
+          /*
           //cognitoUser.signOut();
           cognitoUser.globalSignOut({
             onSuccess: function (result) {
@@ -45,6 +47,7 @@ export default class Mypage extends React.Component {
                 alert(err);
             }
           });
+          */
           that.setState({isLogin: true})
           that.setState({isLoading: false})
           that.render
@@ -111,6 +114,11 @@ export default class Mypage extends React.Component {
                        onChange={this.handleNewPasswordChange.bind(this)}/>
                 <input type="submit"/>
               </form>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
+              <Upload />
             </Col>
           </Row>
         </Grid>
