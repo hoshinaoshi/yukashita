@@ -20,27 +20,28 @@ module.exports.upload = (event, context, callback) => {
     Body: json.content
   };
 
-  var resultMsg = "";
+  var resultMsg = "Success";
   var statusCode = 200;
-  bucket.putObject(params, function(err, data) {
-    if (err) {
-      resultMsg = "Error uploading data";
-      statusCode = 500;
-      console.log(resultMsg, err);
-    } else {
-      resultMsg = "Successfully uploaded data";
-      statusCode = 200;
-      console.log(resultMsg, data);
-    }
-    //context.done(null, 'Finished UploadObjectOnS3');
-  });
+  if(event.httpMethod == "POST") {
+    bucket.putObject(params, function(err, data) {
+      if (err) {
+        resultMsg = "Error uploading data";
+        statusCode = 500;
+        console.log(resultMsg, err);
+      } else {
+        console.log(resultMsg, data);
+      }
+      //context.done(null, 'Finished UploadObjectOnS3');
+    });
+  }
   const response = {
     statusCode: statusCode,
     headers: {
       "Access-Control-Allow-Origin" : "*",
-      "Access-Control-Allow-Credentials" : true
+      "Access-Control-Allow-Credentials" : true,
+      "Access-Control-Allow-Methods": "POST,OPTIONS"
     },
-    body: resultMsg
+    body: event
   };
   callback(null, response);
 };

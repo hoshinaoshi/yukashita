@@ -21,7 +21,7 @@ functions:
     events:
       - http:
           path: upload
-          method: put
+          method: post
       - http:
           path: upload
           method: options
