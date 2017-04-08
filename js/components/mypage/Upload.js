@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { HashRouter, Route, Link} from 'react-router-dom'
 import Dropzone from 'react-dropzone';
+import axios from 'axios';
 import { Button, Grid, Row, Col, Jumbotron, Glyphicon, Image, Collapse, Modal } from 'react-bootstrap';
 
 export default class Upload extends Component {
@@ -16,12 +17,18 @@ export default class Upload extends Component {
   }
 
   handleDropAccepted(acceptedFiles){
-    //var req = request.post('/upload');
     acceptedFiles.forEach((file)=> {
-      alert("a")
-      //req.attach(file.name, file);
+      axios.put('https://dzdvd4im60.execute-api.us-west-2.amazonaws.com/dev/upload', file, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: {
+          fileName: file.name,
+          type: file.type,
+          content: file,
+        }
+      })
     });
-    //req.end(callback);
   }
   handleDropRejected(rejectedFiles){
     //var req = request.post('/upload');

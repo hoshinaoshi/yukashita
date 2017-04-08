@@ -12,19 +12,36 @@ module.exports.upload = (event, context, callback) => {
   };
   var bucket = new AWS.S3(options)
 
-  const json = JSON.parse(event.body); 
+  const json = JSON.parse(event.body);
+  console.log(JSON.stringify(event,undefined,1));
   var params = {
     Key: "original-files/" + json.fileName,
     ContentType: json.type,
-    Body: json.image
+    Body: json.content
   };
+
+  var resultMsg = "";
+  var statusCode = 200;
   bucket.putObject(params, function(err, data) {
     if (err) {
-      console.log("Error uploading data: ", err);
+      resultMsg = "Error uploading data";
+      statusCode = 500;
+      console.log(resultMsg, err);
     } else {
-      console.log("Successfully uploaded data to " + data);
+      resultMsg = "Successfully uploaded data";
+      statusCode = 200;
+      console.log(resultMsg, data);
     }
-    context.done(null, 'Finished UploadObjectOnS3');
+    //context.done(null, 'Finished UploadObjectOnS3');
   });
+  const response = {
+    statusCode: statusCode,
+    headers: {
+      "Access-Control-Allow-Origin" : "*",
+      "Access-Control-Allow-Credentials" : true
+    },
+    body: resultMsg
+  };
+  callback(null, response);
 };
 
