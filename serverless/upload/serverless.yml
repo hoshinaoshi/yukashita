@@ -22,9 +22,9 @@ functions:
       - http:
           path: upload
           method: put
-resources:
-  Resources:
-    UploadBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: "yukashita-image-uploads"
+#resources:
+#  Resources:
+#    UploadBucket:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: "yukashita-image-uploads"
