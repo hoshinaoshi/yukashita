@@ -14,7 +14,7 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:PutObject"
-      Resource: "arn:aws:s3:::yukashita-image-uploads/original-files"
+      Resource: "arn:aws:s3:::yukashita-image-uploads/*"
 functions:
   upload:
     handler: handler.upload
@@ -22,9 +22,10 @@ functions:
       - http:
           path: upload
           method: put
-#resources:
-#  Resources:
-#    UploadBucket:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: "yukashita-image-uploads"
+    memorySize: 256
+resources:
+  Resources:
+    UploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: "yukashita-image-uploads"
