@@ -1,31 +1,28 @@
 'use strict';
 
 module.exports.upload = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }),
+  var AWS = require('aws-sdk');
+  AWS.config.region = 'us-west-2';
+  var bucketName = 'yukashita-image-uploads';
+
+  var options = {
+    params: {
+      Bucket: bucketName
+    }
   };
 
-  callback(null, response);
-
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
-};
-
-module.exports.test = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go test',
-      input: event,
-    }),
+  const params = JSON.parse(event.body); 
+  var params = {
+    Key: params.fileName,
+    Body: params.image
   };
-
-  callback(null, response);
-
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
+  s3bucket.upload(params, function(err, data) {
+    if (err) {
+      console.log("Error uploading data: ", err);
+    } else {
+      console.log("Successfully uploaded data to ");
+    }
+    context.done(null, 'Finished UploadObjectOnS3');
+  });
 };
+
