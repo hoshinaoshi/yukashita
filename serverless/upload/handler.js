@@ -10,14 +10,15 @@ module.exports.upload = (event, context, callback) => {
       Bucket: "yukashita-image-uploads"
     }
   };
-  var bucket = new AWS.S3(options)
+  var bucket = new AWS.S3(options);
 
-  const json = JSON.parse(event.body);
+  //const json = JSON.parse(event.body);
+  const buffer = new Buffer(event.body, 'base64');
   console.log(JSON.stringify(event,undefined,1));
   var params = {
-    Key: "original-files/" + json.fileName,
-    ContentType: json.type,
-    Body: json.content
+    Key: "original-files/" + "ttest.jpg",
+    ContentType: "image/jpeg",
+    Body: buffer
   };
 
   var resultMsg = "Success";
@@ -31,7 +32,7 @@ module.exports.upload = (event, context, callback) => {
       } else {
         console.log(resultMsg, data);
       }
-      //context.done(null, 'Finished UploadObjectOnS3');
+      context.done(null, 'Finished UploadObjectOnS3');
     });
   }
   const response = {
@@ -41,7 +42,7 @@ module.exports.upload = (event, context, callback) => {
       "Access-Control-Allow-Credentials" : true,
       "Access-Control-Allow-Methods": "POST,OPTIONS"
     },
-    body: event
+    body: "{\"status\": \"seikou\"}"
   };
   callback(null, response);
 };
