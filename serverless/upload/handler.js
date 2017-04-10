@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports.upload = (event, context, callback) => {
+  console.log(JSON.stringify(event, undefined, 1));
   var AWS = require('aws-sdk');
   AWS.config.region = 'us-west-2';
 
@@ -12,12 +13,12 @@ module.exports.upload = (event, context, callback) => {
   };
   var bucket = new AWS.S3(options);
 
-  //const json = JSON.parse(event.body);
-  const buffer = new Buffer(event.body, 'base64');
-  console.log(JSON.stringify(event,undefined,1));
+  const json = JSON.parse(event.body);
+  const buffer = new Buffer(json.body.replace(/^data.+,/,""), 'base64'); // ファイルのデータ以外の情報を消す。
+
   var params = {
-    Key: "original-files/" + "ttest.jpg",
-    ContentType: "image/jpeg",
+    Key: ["original-files", event.requestContext.stage, json.name.replace(/\//g,"")].join("/"),
+    ContentType: json.type,
     Body: buffer
   };
 
@@ -46,4 +47,3 @@ module.exports.upload = (event, context, callback) => {
   };
   callback(null, response);
 };
-

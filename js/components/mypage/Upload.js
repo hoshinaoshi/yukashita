@@ -19,22 +19,25 @@ export default class Upload extends Component {
 
   handleDropAccepted(acceptedFiles){
     acceptedFiles.forEach((file)=> {
-      /*
-      axios.post('https://dzdvd4im60.execute-api.us-west-2.amazonaws.com/dev/upload', file)
-      var formData = new FormData();
-      formData.append('file', file);
-      */
-      request.post("https://dzdvd4im60.execute-api.us-west-2.amazonaws.com/dev/upload")
-        .attach(file.name, file)
-        .set('Accept', 'image/jpeg')
-        .set('Content-type', 'image/jpeg')
-	.end(function(err, res) {
-	  if (err) {
-	    console.log(err);
-	  } else {
-	    console.log(res.status);
-	  }
-	});
+      var fr=new FileReader();
+      fr.onload=function(evt) {
+        request.post("https://dzdvd4im60.execute-api.us-west-2.amazonaws.com/dev/upload")
+          .send(
+            {
+              name: file.name,
+              type: file.type,
+              body: evt.target.result
+            }
+          )
+          .end(function(err, res) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(res.status);
+            }
+          });
+      }
+      fr.readAsDataURL(file);
     });
   }
   handleDropRejected(rejectedFiles){
