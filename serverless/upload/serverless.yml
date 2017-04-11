@@ -16,6 +16,35 @@ provider:
         - "s3:PutObject"
       Resource: "arn:aws:s3:::yukashita-image-uploads/*"
 functions:
+  auth:
+    handler: auth.auth
+    timeout : 5
+    memorySize : 128
+  hello:
+    handler: test.hello
+    events:
+      - http:
+          path: hello
+          method: get
+          authorizer: auth
+      - http:
+          path: hello
+          method: options
+    memorySize: 128
+    response:
+      headers:
+        Content-Type: "'application/json'"
+      template: $input.path('$')
+    cors:
+      origins:
+        - '*'
+      headers:
+        - Content-Type
+        - X-Amz-Date
+        - Authorization
+        - X-Api-Key
+        - X-Amz-Security-Token
+      allowCredentials: false
   upload:
     handler: handler.upload
     events:

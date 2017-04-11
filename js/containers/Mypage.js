@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { HashRouter, Route, Link, Redirect, withRouter} from 'react-router-dom'
 import Upload from '../components/mypage/Upload';
+import request from 'superagent';
 
 // AWS
 import awsConfig from "../utils/aws-config.js";
@@ -32,11 +33,13 @@ export default class Mypage extends React.Component {
 
   componentDidMount(){
     var that = this
+    var token = ""
     const cognitoUser = userPool.getCurrentUser();
     if (cognitoUser != null){
       cognitoUser.getSession(function(err, sessresult) {
         if (sessresult) {
           console.log("login success")
+          token = sessresult.accessToken.jwtToken
           /*
           //cognitoUser.signOut();
           cognitoUser.globalSignOut({
@@ -65,6 +68,23 @@ export default class Mypage extends React.Component {
       this.setState({isLoading: false})
       this.render
     }
+    console.log("invoke start")
+    console.log(token)
+        request.get("https://dzdvd4im60.execute-api.us-west-2.amazonaws.com/dev/hello")
+          .set('Authorization', token)
+          .send(
+            {
+              name: "NaoshiHoshi",
+            }
+          )
+          .end(function(err, res) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(res.status);
+            }
+          });
+    console.log("invoke end")
   }
 
   handleOldPasswordChange(e) {
