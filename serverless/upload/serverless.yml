@@ -4,8 +4,8 @@ service: uploads
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
-
 provider:
+  variableSyntax: "\\${([^cognito*+][ :a-zA-Z0-9._,\\-\\/\\(\\)]+?)}" # ${cognito-identity.amazonaws.com:sub}をそのまま文字列として出力するようにする。
   name: aws
   runtime: nodejs6.10
   stage: dev
@@ -14,7 +14,7 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:PutObject"
-      Resource: "arn:aws:s3:::yukashita-image-uploads/*"
+      Resource: "arn:aws:s3:::yukashita-image-uploads/${self:provider.stage}/${cognito-identity.amazonaws.com:sub}/*"
 functions:
   auth:
     handler: auth.auth
