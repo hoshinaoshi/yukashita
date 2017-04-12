@@ -8,25 +8,23 @@ var cognitoidentityserviceprovider = new aws.CognitoIdentityServiceProvider({
 module.exports.auth = (event, context, callback)=> {
   console.log(JSON.stringify(event, undefined, 1));
 
-    const token = event.authorizationToken != null ? event.authorizationToken : event.headers.Authorization
+  const token = event.authorizationToken != null ? event.authorizationToken : event.headers.Authorization
 
-    var params = {
-        AccessToken: token
-    };
-    cognitoidentityserviceprovider.getUser(params, function (err, data) {
-        if (err) {
-            console.log(err)
-            callback(null, generatePolicy('user', 'Deny', event.methodArn , token));
-            //callback(null, generatePolicy('user', 'Allow', event.methodArn, data));
-        } else {
-            console.log(data)
-            callback(null, generatePolicy('user', 'Allow', event.methodArn , token));
-        }
-        return;
-    });
+  var params = {
+      AccessToken: token
+  };
+  cognitoidentityserviceprovider.getUser(params, function (err, data) {
+    if (err) {
+      console.log(err)
+      callback(null, generatePolicy('user', 'Deny', event.methodArn , token));
+    } else {
+      console.log(data)
+      callback(null, generatePolicy('user', 'Allow', event.methodArn , token));
+    }
+    return;
+  });
 };
 
-//"methodArn":"arn:aws:execute-api:<regionId>:<accountId>:<apiId>/<stage>/<method>/<resourcePath>"
 const generatePolicy = function generatePolicy(principalId, effect, resource , token) {
   return {
     principalId:principalId,
@@ -40,5 +38,3 @@ const generatePolicy = function generatePolicy(principalId, effect, resource , t
     }
   };
 };
-
-//export default  auth;
