@@ -7,6 +7,7 @@ var cognitoidentityserviceprovider = new aws.CognitoIdentityServiceProvider({
 
 module.exports.hello = (event, context, callback) => {
   console.log(JSON.stringify(event, undefined, 1));
+  console.log(JSON.stringify(context, undefined, 1));
   const token = event.headers.Authorization
   var params = {
       AccessToken: token

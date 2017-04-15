@@ -14,7 +14,7 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:PutObject"
-      Resource: "arn:aws:s3:::yukashita-image-uploads/${self:provider.stage}/${cognito-identity.amazonaws.com:sub}/*"
+      Resource: "arn:aws:s3:::yukashita-image-uploads/original-files/*"
 functions:
   auth:
     handler: auth.auth
@@ -51,10 +51,15 @@ functions:
       - http:
           path: upload
           method: post
+          authorizer: auth
       - http:
           path: upload
           method: options
-    memorySize: 256
+    memorySize: 128
+    response:
+      headers:
+        Content-Type: "'application/json'"
+      template: $input.path('$')
     cors:
       origins:
         - '*'

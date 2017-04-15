@@ -39,6 +39,8 @@ export default class Mypage extends React.Component {
       cognitoUser.getSession(function(err, sessresult) {
         if (sessresult) {
           console.log("login success")
+          console.log("access token: " + sessresult.accessToken.jwtToken)
+          console.log("id token: " + sessresult.idToken.jwtToken)
           token = sessresult.accessToken.jwtToken
           /*
           //cognitoUser.signOut();
@@ -69,7 +71,7 @@ export default class Mypage extends React.Component {
       this.render
     }
     console.log("invoke start")
-    console.log(token)
+    /*
         request.get("https://dzdvd4im60.execute-api.us-west-2.amazonaws.com/dev/hello")
           .set('Authorization', token)
           .send(
@@ -84,6 +86,7 @@ export default class Mypage extends React.Component {
               console.log(res.status);
             }
           });
+          */
     console.log("invoke end")
   }
 

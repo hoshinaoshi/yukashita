@@ -4,6 +4,20 @@ import Dropzone from 'react-dropzone';
 import request from 'superagent';
 import { Button, Grid, Row, Col, Jumbotron, Glyphicon, Image, Collapse, Modal } from 'react-bootstrap';
 
+// AWS
+import awsConfig from "../../utils/aws-config.js";
+import {Config, CognitoIdentityCredentials} from "aws-sdk";
+import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
+Config.region = awsConfig.region;
+Config.credentials = new CognitoIdentityCredentials({
+  IdentityPoolId: awsConfig.IdentityPoolId
+});
+
+const userPool = new CognitoUserPool({
+  UserPoolId: awsConfig.UserPoolId,
+  ClientId:   awsConfig.ClientId,
+});
+
 export default class Upload extends Component {
   constructor(...args) {
     super(...args);
@@ -11,30 +25,48 @@ export default class Upload extends Component {
       files: []
     };
   }
+  componentDidMount(){
+    const cognitoUser = userPool.getCurrentUser();
+    var that = this;
+    if (cognitoUser != null){
+      cognitoUser.getSession(function(err, sessresult) {
+        if (sessresult) {
+          //this.setState({token: sessresult.accessToken.jwtToken})
+          console.log("success")
+        } else{
+          console.log("login fail")
+        }
+      });
+    }
+  }
 
   onOpenClick() {
     this.dropzone.open();
   }
 
   handleDropAccepted(acceptedFiles){
+    const cognitoUser = userPool.getCurrentUser();
     acceptedFiles.forEach((file)=> {
       var fr=new FileReader();
       fr.onload=function(evt) {
-        request.post("https://dzdvd4im60.execute-api.us-west-2.amazonaws.com/dev/upload")
-          .send(
-            {
-              name: file.name,
-              type: file.type,
-              body: evt.target.result
-            }
-          )
-          .end(function(err, res) {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log(res.status);
-            }
-          });
+        cognitoUser.getSession(function(err, sessresult) {
+          request.post("https://dzdvd4im60.execute-api.us-west-2.amazonaws.com/dev/upload")
+            .set('Authorization', sessresult.accessToken.jwtToken + ":" + sessresult.idToken.jwtToken)
+            .send(
+              {
+                name: file.name,
+                type: file.type,
+                body: evt.target.result
+              }
+            )
+            .end(function(err, res) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log(res.status);
+              }
+            });
+        });
       }
       fr.readAsDataURL(file);
     });
