@@ -32,14 +32,9 @@ module.exports.upload = (event, context, callback) => {
   console.log(["original-files", event.requestContext.stage, ccid, json.name.replace(/\//g,"")].join("/"))
   console.log("=========")
 
-  var params = {
-    Key: ["original-files", event.requestContext.stage, "f6bf4bde-3f7e-4532-a028-47d5405b2847", json.name.replace(/\//g,"")].join("/"),
-    ContentType: json.type,
-    Body: buffer
-  };
-
   var resultMsg = "Success";
   var statusCode = 200;
+  console.log("identity_before: " + AWS.config.credentials.identityId)
   if(event.httpMethod == "POST") {
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
       region: "us-west-2",
@@ -52,6 +47,14 @@ module.exports.upload = (event, context, callback) => {
     AWS.config.credentials.get(function(err) {
       if (err) console.log(err);
       console.log(AWS.config.credentials);
+      console.log("identity_after: " + AWS.config.credentials.identityId)
+      console.log(["original-files", event.requestContext.stage, AWS.config.credentials.identityId, json.name.replace(/\//g,"")].join("/"));
+
+      var params = {
+        Key: ["original-files", event.requestContext.stage, AWS.config.credentials.identityId, json.name.replace(/\//g,"")].join("/"),
+        ContentType: json.type,
+        Body: buffer
+      };
       bucket.putObject(params, function(err, data) {
         if (err) {
           resultMsg = "Error uploading data";
