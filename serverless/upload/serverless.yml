@@ -13,11 +13,16 @@ provider:
   iamRoleStatements:
     - Effect: "Allow"
       Action:
-        - "s3:PutObject"
-        - "dynamodb:PutItem"
+        - s3:PutObject
+        - dynamodb:PutItem
+        - dynamodb:DescribeStream
+        - dynamodb:GetRecords
+        - dynamodb:GetShardIterator
+        - dynamodb:ListStreams
       Resource:
         - "arn:aws:s3:::yukashita-image-uploads/original-files/${self:provider.stage}/*"
         - "arn:aws:dynamodb:us-west-2:163792334106:table/${self:provider.stage}-items"
+        - "arn:aws:dynamodb:us-west-2:163792334106:table/dev-items/stream/2017-04-18T21:53:58.659"
 functions:
   auth:
     handler: auth.auth
@@ -57,6 +62,15 @@ functions:
           rules:
             - prefix: original-files/
     memorySize: 128
+  dynamo_stream_proxy:
+    handler: dynamo_stream.proxy
+    memorySize: 128
+    events:
+      - stream:
+          arn: arn:aws:dynamodb:us-west-2:163792334106:table/dev-items/stream/2017-04-18T21:53:58.659
+          batchSize: 1
+          startingPosition: TRIM_HORIZON
+          enabled: true
 resources:
   Resources:
     UploadBucket:
