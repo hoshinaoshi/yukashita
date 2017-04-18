@@ -14,38 +14,15 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:PutObject"
+        - "dynamodb:PutItem"
       Resource:
         - "arn:aws:s3:::yukashita-image-uploads/original-files/${self:provider.stage}/*"
+        - "arn:aws:dynamodb:us-west-2:163792334106:table/${self:provider.stage}-items"
 functions:
   auth:
     handler: auth.auth
     timeout : 5
     memorySize : 128
-  hello:
-    handler: test.hello
-    events:
-      - http:
-          path: hello
-          method: get
-          authorizer: auth
-      - http:
-          path: hello
-          method: options
-    memorySize: 128
-    response:
-      headers:
-        Content-Type: "'application/json'"
-      template: $input.path('$')
-    cors:
-      origins:
-        - '*'
-      headers:
-        - Content-Type
-        - X-Amz-Date
-        - Authorization
-        - X-Api-Key
-        - X-Amz-Security-Token
-      allowCredentials: false
   upload:
     handler: handler.upload
     events:
@@ -71,9 +48,51 @@ functions:
         - X-Api-Key
         - X-Amz-Security-Token
       allowCredentials: false
+  create_dynamo_column:
+    handler: after_upload.create_dynamo_column
+    events:
+      - s3:
+          bucket: "yukashita-image-uploads"
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: original-files/
+    memorySize: 128
 resources:
   Resources:
     UploadBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: "yukashita-image-uploads"
+        BucketName: "yukashita-image-thumbnails"
+    ItemsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: "${self:provider.stage}-items"
+        AttributeDefinitions:
+          - 
+            AttributeName: item_id
+            AttributeType: N
+          - 
+            AttributeName: user_id
+            AttributeType: S
+        KeySchema:
+          - 
+            AttributeName: item_id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          -
+            IndexName: "user_id-item_id-index"
+            KeySchema:
+              -
+                AttributeName: user_id
+                KeyType: HASH
+              -
+                AttributeName: item_id
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
