@@ -19,10 +19,12 @@ provider:
         - dynamodb:GetRecords
         - dynamodb:GetShardIterator
         - dynamodb:ListStreams
+        - "*"
       Resource:
         - "arn:aws:s3:::yukashita-image-uploads/original-files/${self:provider.stage}/*"
         - "arn:aws:dynamodb:us-west-2:163792334106:table/${self:provider.stage}-items"
         - "arn:aws:dynamodb:us-west-2:163792334106:table/dev-items/stream/2017-04-18T21:53:58.659"
+        - "*"
 functions:
   auth:
     handler: auth.auth
