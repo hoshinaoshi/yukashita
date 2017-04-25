@@ -19,12 +19,12 @@ provider:
         - dynamodb:GetRecords
         - dynamodb:GetShardIterator
         - dynamodb:ListStreams
-        - "*"
+        - "lambda:InvokeFunction"
       Resource:
         - "arn:aws:s3:::yukashita-image-uploads/original-files/${self:provider.stage}/*"
         - "arn:aws:dynamodb:us-west-2:163792334106:table/${self:provider.stage}-items"
         - "arn:aws:dynamodb:us-west-2:163792334106:table/dev-items/stream/2017-04-18T21:53:58.659"
-        - "*"
+        - "arn:aws:lambda:us-west-2:163792334106:function:uploads-dev-thumbnail"
 functions:
   auth:
     handler: auth.auth
@@ -55,8 +55,8 @@ functions:
         - X-Api-Key
         - X-Amz-Security-Token
       allowCredentials: false
-  create_dynamo_column:
-    handler: after_upload.create_dynamo_column
+  after_upload:
+    handler: after_upload.handle
     events:
       - s3:
           bucket: "yukashita-image-uploads"
@@ -64,6 +64,8 @@ functions:
           rules:
             - prefix: original-files/
     memorySize: 128
+  thumbnail:
+    handler: thumbnail.create
   dynamo_stream_proxy:
     handler: dynamo_stream.proxy
     memorySize: 128

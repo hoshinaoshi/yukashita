@@ -26,7 +26,7 @@ module.exports.proxy = (event, context, callback) => {
   records.forEach(function(record){
     switch (record.eventName) {
       case "INSERT":
-        invokeLambda("aws-nodejs-dev-hello", JSON.stringify(record, undefined, 1));
+        invokeLambda("INSERY", JSON.stringify(record, undefined, 1));
         break;
       case "MODIFY":
         //invokeLambda("MODIFY", record);

@@ -1,7 +1,9 @@
 'use strict';
 const aws = require("aws-sdk");
+aws.config.region = 'us-west-2';
+var lambda = new aws.Lambda({apiVersion: '2014-11-11'});
 
-module.exports.create_dynamo_column = (event, context, callback) => {
+module.exports.handle = (event, context, callback) => {
   console.log(JSON.stringify(event, undefined, 1));
   console.log(JSON.stringify(context, undefined, 1));
   
@@ -25,7 +27,22 @@ module.exports.create_dynamo_column = (event, context, callback) => {
         console.log(data);
       }
     });
+    // サムネイル作成
+    var invokeParams = {
+      FunctionName: "uploads-dev-thumbnail",
+      InvokeArgs: JSON.stringify({ file_name: record.s3.object.key.split("/")[2].replace("%3",":") }, undefined, 1)
+    };
+    lambda.invokeAsync(invokeParams, function(err, data) {
+      if(err) {
+       console.log(err + err.stack);
+      }
+      else {
+       console.log(data);
+      }
+    });
   });
+
+
   const response = {
     statusCode: 200,
     body: "{\"status\": \"seikou\"}"
