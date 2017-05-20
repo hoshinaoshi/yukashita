@@ -30,7 +30,7 @@ module.exports.handle = (event, context, callback) => {
     // サムネイル作成
     var invokeParams = {
       FunctionName: "uploads-dev-thumbnail",
-      InvokeArgs: JSON.stringify({ file_name: record.s3.object.key.split("/")[2].replace("%3",":") }, undefined, 1)
+      InvokeArgs: JSON.stringify(event, undefined, 1)
     };
     lambda.invokeAsync(invokeParams, function(err, data) {
       if(err) {
