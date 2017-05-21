@@ -25,11 +25,11 @@ module.exports.handle = (event, context, callback) => {
   const dynamoDB = new aws.DynamoDB({region: 'us-west-2'});
   const records = event.Records
   records.forEach(function(record){
-    var date = new Date();
+    const item_id = (new Date()).getTime().toString() + record.s3.object.size.toString()
     var params = {
       TableName: 'dev-items',
       Item: {
-        'item_id':      { "N": date.getTime().toString() + record.s3.object.size.toString() },
+        'item_id':      { "N": item_id },
         'user_id':      { "S": record.s3.object.key.split("/")[2].replace("%3",":") },
         'sale_started': { "N": "1" },
         'deleted':      { "N": "0" },
@@ -40,14 +40,15 @@ module.exports.handle = (event, context, callback) => {
         console.log(err, err.stack);
       } else {
         console.log(data);
+
+        event.item_id = item_id
+        // サムネイル作成
+        invokeLambda("uploads-dev-thumbnail", JSON.stringify(event, undefined, 1))
+        // タグ
+        invokeLambda("uploads-dev-rekognition", JSON.stringify(event, undefined, 1))
       }
     });
-    // サムネイル作成
-    invokeLambda("uploads-dev-thumbnail", JSON.stringify(event, undefined, 1))
-    // タグ
-    invokeLambda("uploads-dev-rekognition", JSON.stringify(event, undefined, 1))
   });
-
 
   const response = {
     statusCode: 200,

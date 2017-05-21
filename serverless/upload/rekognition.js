@@ -5,7 +5,7 @@ AWS.config.apiVersions = {
   rekognition: '2016-06-27',
 };
 const rekognition = new AWS.Rekognition();
-const dynamoDBClient = new AWS.DynamoDB.DocumentClient();
+const dynamoDBClient = new AWS.DynamoDB.DocumentClient({region: 'us-west-2'});
 
 module.exports.handle = (event, context, callback) => {
   console.log(JSON.stringify(event, undefined, 1));
@@ -14,8 +14,8 @@ module.exports.handle = (event, context, callback) => {
   var params = {
     Image: {
       S3Object: {
-	Bucket: event.Records[0].s3.bucket.name,
-	Name:   event.Records[0].s3.object.key.replace("%3A",":")
+        Bucket: event.Records[0].s3.bucket.name,
+        Name:   event.Records[0].s3.object.key.replace("%3A",":")
       }
     }
   };
@@ -31,13 +31,13 @@ module.exports.handle = (event, context, callback) => {
       labels.push(conditionDetail)
     });
 
+    console.log("item_id: " + event.item_id);
+    console.log(JSON.stringify(event, undefined, 1));
     var updateParams = {
       TableName: 'dev-items',
-      Key: {"item_id": 1492473563444288715},
-      UpdateExpression: 'set #tags = :rekognition_tags',
-      ExpressionAttributeNames: {'#tags': 'tags'},
-      ExpressionAttributeValues: {':rekognition_tags': labels},
-      ReturnValues:"UPDATED_NEW"
+      Key: { "item_id": 1492473563444288715 },
+      UpdateExpression: 'SET tags = :rekognition_tags',
+      ExpressionAttributeValues: {':rekognition_tags': labels}
     };
 
     dynamoDBClient.update(updateParams, function(err, data) {

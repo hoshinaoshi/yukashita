@@ -26,8 +26,9 @@ provider:
         - "arn:aws:s3:::yukashita-image-uploads/original-files/${self:provider.stage}/*"
         - "arn:aws:s3:::yukashita-image-thumbnails/original-files/${self:provider.stage}/*"
         - "arn:aws:dynamodb:us-west-2:163792334106:table/${self:provider.stage}-items"
-        - "arn:aws:dynamodb:us-west-2:163792334106:table/dev-items/stream/2017-04-18T21:53:58.659"
-        - "arn:aws:lambda:us-west-2:163792334106:function:uploads-dev-thumbnail"
+        - "arn:aws:dynamodb:us-west-2:163792334106:table/${self:provider.stage}-items/stream/2017-04-18T21:53:58.659"
+        - "arn:aws:lambda:us-west-2:163792334106:function:uploads-${self:provider.stage}-thumbnail"
+        - "arn:aws:lambda:us-west-2:163792334106:function:uploads-${self:provider.stage}-rekognition"
 functions:
   auth:
     handler: auth.auth
