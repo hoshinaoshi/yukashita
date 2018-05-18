@@ -3,6 +3,21 @@ const aws = require("aws-sdk");
 aws.config.region = 'us-west-2';
 var lambda = new aws.Lambda({apiVersion: '2014-11-11'});
 
+function invokeLambda(functionName, streamRecord){
+  var invokeParams = {
+    FunctionName: functionName,
+    InvokeArgs: streamRecord
+  };
+  lambda.invokeAsync(invokeParams, function(err, data) {
+    if(err) {
+     console.log(err + err.stack);
+    }
+    else {
+     console.log(data);
+    }
+  });
+}
+
 module.exports.handle = (event, context, callback) => {
   console.log(JSON.stringify(event, undefined, 1));
   console.log(JSON.stringify(context, undefined, 1));
@@ -28,18 +43,9 @@ module.exports.handle = (event, context, callback) => {
       }
     });
     // サムネイル作成
-    var invokeParams = {
-      FunctionName: "uploads-dev-thumbnail",
-      InvokeArgs: JSON.stringify(event, undefined, 1)
-    };
-    lambda.invokeAsync(invokeParams, function(err, data) {
-      if(err) {
-       console.log(err + err.stack);
-      }
-      else {
-       console.log(data);
-      }
-    });
+    invokeLambda("uploads-dev-thumbnail", JSON.stringify(event, undefined, 1))
+    // タグ
+    invokeLambda("uploads-dev-rekognition", JSON.stringify(event, undefined, 1))
   });
 
 
